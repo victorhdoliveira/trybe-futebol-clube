@@ -8,7 +8,10 @@ export default class TeamsService {
   }
 
   public async findAll(): Promise<Teams[]> {
-    const result = await this.teamModel.findAll();
-    return result;
+    return this.teamModel.findAll();
+  }
+
+  public async findByTeamId(id: string): Promise<Teams | null> {
+    return this.teamModel.findByPk(id);
   }
 }
