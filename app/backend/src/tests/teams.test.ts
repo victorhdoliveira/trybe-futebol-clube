@@ -30,7 +30,7 @@ describe('Verifica a rota /teams', async () => {
     chaiHttpResponse = await chai.request(app).get('/teams/1');
     const {status, body} = chaiHttpResponse;
 
-    expect(status).to.be.equal(200);
+    expect(status).to.be.eq(200);
     expect(body).to.be.deep.eq(teamById);
   });
 });
