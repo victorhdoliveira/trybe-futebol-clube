@@ -4,22 +4,16 @@ import { IPayload } from '../interfaces/IUser';
 
 dotenv.config();
 
-export default class Token {
-  private _jwt = jwt;
-  private _secret: jwt.Secret;
-  private _options: jwt.SignOptions;
+const secret = process.env.JWT_SECRET || 'jwtsecret';
+const options: jwt.SignOptions = {
+  algorithm: 'HS256',
+  expiresIn: '7d',
+};
 
-  constructor() {
-    this._secret = process.env.JWT_SECRET || 'jwtsecret';
-    this._options = {
-      algorithm: 'HS256',
-      expiresIn: '7d',
-    };
-  }
+export const createToken = (payload:IPayload): string => {
+  const { id, username, email, role } = payload;
+  const token = jwt.sign({ id, username, email, role }, secret, options);
+  return token;
+};
 
-  createToken(payload:IPayload): string {
-    const { id, username, email, role } = payload;
-    const token = this._jwt.sign({ id, username, email, role }, this._secret, this._options);
-    return token;
-  }
-}
+export const verifyToken = (token:string) => jwt.verify(token, secret);

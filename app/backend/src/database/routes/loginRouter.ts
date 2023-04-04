@@ -9,5 +9,6 @@ const loginService = new LoginService(Users);
 const loginController = new LoginController(loginService);
 
 loginRouter.post('/', loginValidation, loginController.login);
+// loginRouter.get('/role', loginController.authToken);
 
 export default loginRouter;

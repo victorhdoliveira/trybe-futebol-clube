@@ -1,25 +1,30 @@
-import { compareSync } from 'bcryptjs';
 import { Request, Response } from 'express';
-import Token from '../auth/jsw';
 import LoginService from '../services/login.service';
 
 export default class LoginController {
-  private _token: Token;
-  constructor(private _service: LoginService) {
-    this._token = new Token();
-  }
+  constructor(private _service: LoginService) {}
 
   public login = async (req: Request, res: Response): Promise<Response> => {
-    try {
-      const { email, password } = req.body;
-      const user = await this._service.findByUserEmail(email);
-      if (!user || !compareSync(password, user.password)) {
-        return res.status(401).json({ message: 'Invalid email or password' });
-      }
-      const token = this._token.createToken(user);
-      return res.status(200).json({ token });
-    } catch (err) {
-      return res.status(500).json({ message: 'Internal Error' });
+    const { email, password } = req.body;
+    const token = await this._service.getLogin(email, password);
+    if (!token) {
+      return res.status(401).json({ message: 'Invalid email or password' });
     }
+    return res.status(200).json({ token });
   };
 }
+
+//   public authToken = async (req: Request, res: Response) => {
+//     try {
+//       const { authorization } = req.headers;
+
+//       if (!authorization) {
+//         return res.status(401).json({ message: 'Token not found' });
+//       }
+//       this._token.verifyToken(authorization);
+//       return res.status(200).json({ role: 'admin' });
+//     } catch (err) {
+//       res.status(401).json({ message: 'Token must be a valid token' });
+//     }
+//   };
+// }
