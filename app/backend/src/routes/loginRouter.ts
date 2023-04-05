@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import LoginController from '../controllers/login.controller';
-import authToken from '../middleware/verifyAuthToken';
-import loginValidation from '../middleware/verifyLogin';
-import Users from '../models/UsersModel';
-import LoginService from '../services/login.service';
+import LoginController from '../database/controllers/login.controller';
+import authToken from '../database/middleware/verifyAuthToken';
+import loginValidation from '../database/middleware/verifyLogin';
+import Users from '../database/models/UsersModel';
+import LoginService from '../database/services/login.service';
 
 const loginRouter = Router();
 const loginService = new LoginService(Users);
