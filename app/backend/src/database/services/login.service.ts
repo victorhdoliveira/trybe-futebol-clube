@@ -19,4 +19,14 @@ export default class LoginService {
       return token;
     }
   }
+
+  public async getUserRole(email: string) {
+    const userRole = await this._userModel.findOne({ where: { email },
+      attributes: ['role'],
+    });
+    if (!userRole) {
+      return null;
+    }
+    return userRole;
+  }
 }
