@@ -2,16 +2,16 @@ import { ModelStatic } from 'sequelize';
 import Teams from '../models/TeamsModel';
 
 export default class TeamsService {
-  private teamModel: ModelStatic<Teams>;
+  private _teamModel: ModelStatic<Teams>;
   constructor(model: ModelStatic<Teams>) {
-    this.teamModel = model;
+    this._teamModel = model;
   }
 
   public async findAll(): Promise<Teams[]> {
-    return this.teamModel.findAll();
+    return this._teamModel.findAll();
   }
 
   public async findByTeamId(id: string): Promise<Teams | null> {
-    return this.teamModel.findByPk(id);
+    return this._teamModel.findByPk(id);
   }
 }
