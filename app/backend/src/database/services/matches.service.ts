@@ -8,7 +8,7 @@ export default class MatchesService {
     this._matchModel = model;
   }
 
-  public async findAll() {
+  public async findAll(): Promise<Matches[]> {
     return this._matchModel.findAll({
       include: [
         {
@@ -23,5 +23,12 @@ export default class MatchesService {
         },
       ],
     });
+  }
+
+  public async updateMatchById(id: string) {
+    return this._matchModel.update(
+      { inProgress: 'false' },
+      { where: { id } },
+    );
   }
 }
