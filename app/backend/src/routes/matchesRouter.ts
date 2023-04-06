@@ -9,6 +9,7 @@ const matchesService = new MatchesService(Matches);
 const matchesController = new MatchesController(matchesService);
 
 matchesRouter.patch('/:id/finish', authToken, matchesController.finishMatch);
+matchesRouter.patch('/:id/', authToken, matchesController.updateMatchScore);
 matchesRouter.get('/', matchesController.getMatches);
 
 export default matchesRouter;

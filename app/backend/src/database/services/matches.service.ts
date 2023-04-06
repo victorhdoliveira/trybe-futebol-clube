@@ -25,9 +25,16 @@ export default class MatchesService {
     });
   }
 
-  public async updateMatchById(id: string) {
+  public async updateMatchStatusById(id: string) {
     return this._matchModel.update(
       { inProgress: 'false' },
+      { where: { id } },
+    );
+  }
+
+  public async updateMatchScoreById(id: string, homeTeamGoals: number, awayTeamGoals:number) {
+    return this._matchModel.update(
+      { homeTeamGoals, awayTeamGoals },
       { where: { id } },
     );
   }

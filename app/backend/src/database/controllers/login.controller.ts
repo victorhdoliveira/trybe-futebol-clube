@@ -14,7 +14,7 @@ export default class LoginController {
   };
 
   public getRole = async (req: Request, res: Response): Promise<Response> => {
-    const { email } = req.body;
+    const { email } = req.body.user;
     if (!email) {
       return res.status(401).json({ message: 'Invalid email' });
     }

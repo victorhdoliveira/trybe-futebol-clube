@@ -9,7 +9,7 @@ const authToken = async (req: Request, res: Response, next: NextFunction) => {
       return res.status(401).json({ message: 'Token not found' });
     }
     const payload = verifyToken(authorization);
-    req.body = payload;
+    req.body.user = payload;
     next();
   } catch (err) {
     res.status(401).json({ message: 'Token must be a valid token' });
