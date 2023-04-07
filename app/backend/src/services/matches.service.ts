@@ -41,6 +41,13 @@ export default class MatchesService {
   }
 
   public async postMatch(newMatch: IMatchBody) {
+    const allMatches = await this._matchModel.findAll();
+    const home = allMatches.find((match) => match.homeTeamId === newMatch.homeTeamId);
+    const away = allMatches.find((match) => match.awayTeamId === newMatch.awayTeamId);
+
+    if (!home || !away) {
+      return null;
+    }
     return this._matchModel.create({ ...newMatch, inProgress: true });
   }
 }

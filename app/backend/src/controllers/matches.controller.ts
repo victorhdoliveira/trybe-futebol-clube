@@ -34,6 +34,10 @@ export default class MatchesController {
   public createMatch = async (req: Request, res: Response): Promise<Response> => {
     const newMatchData = req.body;
     const postMatch = await this.service.postMatch(newMatchData);
+
+    if (!postMatch) {
+      return res.status(404).json({ message: 'There is no team with such id!' });
+    }
     return res.status(201).json(postMatch);
   };
 }
