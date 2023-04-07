@@ -1,7 +1,7 @@
 import { compareSync } from 'bcryptjs';
 import { ModelStatic } from 'sequelize';
-import { createToken } from '../../auth/jsw';
-import Users from '../models/UsersModel';
+import { createToken } from '../auth/jsw';
+import Users from '../database/models/UsersModel';
 
 export default class LoginService {
   private _userModel: ModelStatic<Users>;

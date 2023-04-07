@@ -1,6 +1,6 @@
 import * as dotenv from 'dotenv';
 import * as jwt from 'jsonwebtoken';
-import { IPayload } from '../database/interfaces/IUser';
+import { IPayload } from '../interfaces/IUser';
 
 dotenv.config();
 
