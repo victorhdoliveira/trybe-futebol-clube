@@ -1,17 +1,17 @@
 import { ModelStatic } from 'sequelize';
-import Matches from '../database/models/MatchesModel';
+// import Matches from '../database/models/MatchesModel';
 import Teams from '../database/models/TeamsModel';
 import leaderboardFuncs from '../utils/calulationLeaderboard';
 
 export default class LeaderboardService {
-  matchModel: ModelStatic<Matches>;
+  // matchModel: ModelStatic<Matches>;
   teamModel: ModelStatic<Teams>;
 
   constructor(
-    matchModel: ModelStatic<Matches>,
+    // matchModel: ModelStatic<Matches>,
     teamModel: ModelStatic<Teams>,
   ) {
-    this.matchModel = matchModel;
+    // this.matchModel = matchModel;
     this.teamModel = teamModel;
   }
 
