@@ -1,38 +1,56 @@
 import { ModelStatic } from 'sequelize';
-// import Matches from '../database/models/MatchesModel';
 import Teams from '../database/models/TeamsModel';
-import leaderboardFuncs from '../utils/calulationLeaderboard';
+import { allGamesFuncs, homeOrAwayFuncs } from '../utils/calulationLeaderboard';
 
 export default class LeaderboardService {
-  // matchModel: ModelStatic<Matches>;
   teamModel: ModelStatic<Teams>;
 
   constructor(
-    // matchModel: ModelStatic<Matches>,
     teamModel: ModelStatic<Teams>,
   ) {
-    // this.matchModel = matchModel;
     this.teamModel = teamModel;
   }
 
   public async getLeaderboardHomeOrAway(gameLocation:string) {
-    // const matches = await this.matchModel.findAll();
     const teams = await this.teamModel.findAll();
 
-    const leaderboard = teams.map(async (team) => {
+    const createLeaderboard = teams.map(async (team) => {
       const leaderboardData = {
         name: team.teamName,
-        totalPoints: await leaderboardFuncs
-          .getTotalPointsGameLocation(Number(team.id), gameLocation),
-        totalGames: await leaderboardFuncs.getTotalGames(Number(team.id), gameLocation),
-        totalVictories: await leaderboardFuncs.getTotalVictories(Number(team.id), gameLocation),
-        totalDraws: await leaderboardFuncs.getTotalDraws(Number(team.id), gameLocation),
-        totalLosses: await leaderboardFuncs.getTotalLosses(Number(team.id), gameLocation),
-        goalsFavor: await leaderboardFuncs.getTotalGoalsFavor(Number(team.id), gameLocation),
-        goalsOwn: await leaderboardFuncs.getTotalGoalsFavor(Number(team.id), gameLocation),
+        totalPoints: await homeOrAwayFuncs.pointsGameLocation(Number(team.id), gameLocation),
+        totalGames: await homeOrAwayFuncs.gamesbyLocation(Number(team.id), gameLocation),
+        totalVictories: await homeOrAwayFuncs.victoriesByLocation(Number(team.id), gameLocation),
+        totalDraws: await homeOrAwayFuncs.drawsByLocation(Number(team.id), gameLocation),
+        totalLosses: await homeOrAwayFuncs.lossesByLocation(Number(team.id), gameLocation),
+        goalsFavor: await homeOrAwayFuncs.goalsFavorByLocation(Number(team.id), gameLocation),
+        goalsOwn: await homeOrAwayFuncs.goalsOwnByLocation(Number(team.id), gameLocation),
+        goalsBalance: await homeOrAwayFuncs.goalsBalanceByLocation(Number(team.id), gameLocation),
+        efficiency: await homeOrAwayFuncs.efficiencyByLocation(Number(team.id), gameLocation),
       };
       return leaderboardData;
     });
-    return Promise.all(leaderboard);
+    return Promise.all(createLeaderboard);
+  }
+
+  public async getCompleteLeaderboard() {
+    const teams = await this.teamModel.findAll();
+
+    const createLeaderboard = teams.map(async (team) => {
+      const leaderboardData = {
+        name: team.teamName,
+        totalPoints: await allGamesFuncs.totalPoints(Number(team.id)),
+        totalGames: await allGamesFuncs.totalGames(Number(team.id)),
+        totalVictories: await allGamesFuncs.victories(Number(team.id)),
+        totalDraws: await allGamesFuncs.draws(Number(team.id)),
+        totalLosses: await allGamesFuncs.losses(Number(team.id)),
+        goalsFavor: await allGamesFuncs.goalsFavor(Number(team.id)),
+        goalsOwn: await allGamesFuncs.goalsOwn(Number(team.id)),
+        goaslBalance: await allGamesFuncs.goalsBalance(Number(team.id)),
+        efficiency: await allGamesFuncs.efficiency(Number(team.id)),
+      };
+      return leaderboardData;
+    });
+    const leaderboard = Promise.all(createLeaderboard);
+    return leaderboard;
   }
 }
