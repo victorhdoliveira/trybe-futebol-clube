@@ -5,7 +5,7 @@ export default class LeaderboardController {
   constructor(private _service: LeaderboardService) {}
 
   public homeStandings = async (req: Request, res: Response): Promise<Response> => {
-    const leaderboard = await this._service.getLeaderboardHomeOrAway('home');
+    const leaderboard = await this._service.sortLeaderboardHomeOrAway('home');
     if (!leaderboard) {
       return res.status(500).json({ message: 'Error getting home leaderboard' });
     }
@@ -13,7 +13,7 @@ export default class LeaderboardController {
   };
 
   public awayStandings = async (req: Request, res: Response): Promise<Response> => {
-    const leaderboard = await this._service.getLeaderboardHomeOrAway('away');
+    const leaderboard = await this._service.sortLeaderboardHomeOrAway('away');
     if (!leaderboard) {
       return res.status(500).json({ message: 'Error getting away leaderboard' });
     }
@@ -21,7 +21,7 @@ export default class LeaderboardController {
   };
 
   public completeStandings = async (req: Request, res: Response): Promise<Response> => {
-    const leaderboard = await this._service.getCompleteLeaderboard();
+    const leaderboard = await this._service.sortCompleteLeaderboard();
     if (!leaderboard) {
       return res.status(500).json({ message: 'Error getting leaderboard' });
     }

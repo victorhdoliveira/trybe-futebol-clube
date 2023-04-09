@@ -1,3 +1,4 @@
+import { orderBy } from 'lodash';
 import { ModelStatic } from 'sequelize';
 import Teams from '../database/models/TeamsModel';
 import { allGamesFuncs, homeOrAwayFuncs } from '../utils/calulationLeaderboard';
@@ -32,6 +33,15 @@ export default class LeaderboardService {
     return Promise.all(createLeaderboard);
   }
 
+  public async sortLeaderboardHomeOrAway(gameLocation:string) {
+    const leaderboard = await this.getLeaderboardHomeOrAway(gameLocation);
+    return orderBy( // método orderBy retirado de https://timmousk.com/blog/lodash-orderby/
+      leaderboard,
+      ['totalPoints', 'totalVictories', 'goalsBalance', 'goalsFavor'],
+      ['desc', 'desc', 'desc', 'desc'],
+    );
+  }
+
   public async getCompleteLeaderboard() {
     const teams = await this.teamModel.findAll();
 
@@ -45,12 +55,20 @@ export default class LeaderboardService {
         totalLosses: await allGamesFuncs.losses(Number(team.id)),
         goalsFavor: await allGamesFuncs.goalsFavor(Number(team.id)),
         goalsOwn: await allGamesFuncs.goalsOwn(Number(team.id)),
-        goaslBalance: await allGamesFuncs.goalsBalance(Number(team.id)),
+        goalsBalance: await allGamesFuncs.goalsBalance(Number(team.id)),
         efficiency: await allGamesFuncs.efficiency(Number(team.id)),
       };
       return leaderboardData;
     });
-    const leaderboard = Promise.all(createLeaderboard);
-    return leaderboard;
+    return Promise.all(createLeaderboard);
+  }
+
+  public async sortCompleteLeaderboard() {
+    const leaderboard = await this.getCompleteLeaderboard();
+    return orderBy(
+      leaderboard,
+      ['totalPoints', 'totalVictories', 'goalsBalance', 'goalsFavor'],
+      ['desc', 'desc', 'desc', 'desc'],
+    );
   }
 }
