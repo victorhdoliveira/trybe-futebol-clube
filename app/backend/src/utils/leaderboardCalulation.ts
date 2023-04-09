@@ -30,13 +30,9 @@ const totalPointsByAway = async (id: number): Promise<number> => {
   const totalPoints = (win * 3) + draw;
   return totalPoints;
 };
-
 const pointsGameLocation = async (id:number, location:string) => {
-  if (location === 'home') {
-    return totalPointsByHome(id);
-  } if (location === 'away') {
-    return totalPointsByAway(id);
-  }
+  if (location === 'home') { return totalPointsByHome(id); }
+  if (location === 'away') { return totalPointsByAway(id); }
 };
 
 const totalPoints = async (id:number): Promise<number> => {
@@ -127,61 +123,72 @@ const losses = async (id:number): Promise<number> => {
   return homeLoses + awayLoses;
 };
 
+// generic goals
+const sumGoals = async (array: any[]) => array.reduce((acc:number, cur:number) => acc + cur, 0);
+
 // goalsFavor
 const goalsFavorByLocation = async (id:number, location:string) => {
   if (location === 'home') {
     const homeMatches = await finishedMatchesByHome(id);
-    const goalsFavor = homeMatches.filter((match) => match.homeTeamGoals).length;
-    return goalsFavor;
+    const goalsFavor = homeMatches.map((match) => match.homeTeamGoals);
+    return sumGoals(goalsFavor);
   } if (location === 'away') {
     const awayMatches = await finishedMatchesByAway(id);
-    const goalsFavor = awayMatches.filter((match) => match.awayTeamGoals).length;
-    return goalsFavor;
+    const goalsFavor = awayMatches.map((match) => match.awayTeamGoals);
+    return sumGoals(goalsFavor);
   }
 };
 
 const goalsFavor = async (id:number): Promise<number> => {
   const homeMatches = await finishedMatchesByHome(id);
-  const homeGoalsFavor = homeMatches.filter((match) => match.homeTeamGoals).length;
+  const homeGoalsFavor = homeMatches.map((match) => match.homeTeamGoals);
+  const sumHomeGoalsFavor = await sumGoals(homeGoalsFavor);
   const awayMatches = await finishedMatchesByAway(id);
-  const awayGoalsFavor = awayMatches.filter((match) => match.awayTeamGoals).length;
-  return homeGoalsFavor + awayGoalsFavor;
+  const awayGoalsFavor = awayMatches.map((match) => match.awayTeamGoals);
+  const sumAwayGoalsFavor = await sumGoals(awayGoalsFavor);
+  return sumHomeGoalsFavor + sumAwayGoalsFavor;
 };
 
 // goalsOwn
 const goalsOwnByLocation = async (id:number, location:string) => {
   if (location === 'home') {
     const homeMatches = await finishedMatchesByHome(id);
-    const goalsOwn = homeMatches.filter((match) => match.awayTeamGoals).length;
-    return goalsOwn;
+    const goalsOwn = homeMatches.map((match) => match.awayTeamGoals);
+    return sumGoals(goalsOwn);
   } if (location === 'away') {
     const awayMatches = await finishedMatchesByAway(id);
-    const goalsOwn = awayMatches.filter((match) => match.homeTeamGoals).length;
-    return goalsOwn;
+    const goalsOwn = awayMatches.map((match) => match.homeTeamGoals);
+    return sumGoals(goalsOwn);
   }
 };
 
 const goalsOwn = async (id:number): Promise<number> => {
   const homeMatches = await finishedMatchesByHome(id);
-  const homeGoalsOwn = homeMatches.filter((match) => match.awayTeamGoals).length;
+  const homeGoalsOwn = homeMatches.map((match) => match.awayTeamGoals);
+  const sumHomeGoalsOwn = await sumGoals(homeGoalsOwn);
   const awayMatches = await finishedMatchesByAway(id);
-  const awayGoalsOwn = awayMatches.filter((match) => match.homeTeamGoals).length;
-  return homeGoalsOwn + awayGoalsOwn;
+  const awayGoalsOwn = awayMatches.map((match) => match.homeTeamGoals);
+  const sumAwayGoalsOwn = await sumGoals(awayGoalsOwn);
+  return sumHomeGoalsOwn + sumAwayGoalsOwn;
 };
 
 // goalsBalance
 const goalsBalanceByLocation = async (id:number, location:string) => {
   if (location === 'home') {
     const homeMatches = await finishedMatchesByHome(id);
-    const homeGoalsFavor = homeMatches.filter((match) => match.homeTeamGoals).length;
-    const homeGoalsOwn = homeMatches.filter((match) => match.awayTeamGoals).length;
-    return homeGoalsFavor - homeGoalsOwn;
+    const homeGoalsFavor = homeMatches.map((match) => match.homeTeamGoals);
+    const homeGoalsOwn = homeMatches.map((match) => match.awayTeamGoals);
+    const sumHomeGoalsFavor = await sumGoals(homeGoalsFavor);
+    const sumHomeGoalsOwn = await sumGoals(homeGoalsOwn);
+    return sumHomeGoalsFavor - sumHomeGoalsOwn;
   }
   if (location === 'away') {
     const awayMatches = await finishedMatchesByAway(id);
-    const awayGoalsFavor = awayMatches.filter((match) => match.awayTeamGoals).length;
-    const awayGoalsOwn = awayMatches.filter((match) => match.homeTeamGoals).length;
-    return awayGoalsFavor - awayGoalsOwn;
+    const awayGoalsFavor = awayMatches.map((match) => match.awayTeamGoals);
+    const awayGoalsOwn = awayMatches.map((match) => match.homeTeamGoals);
+    const sumAwayGoalsFavor = await sumGoals(awayGoalsFavor);
+    const sumAwayGoalsOwn = await sumGoals(awayGoalsOwn);
+    return sumAwayGoalsFavor - sumAwayGoalsOwn;
   }
 };
 
@@ -226,7 +233,6 @@ const homeOrAwayFuncs = { victoriesByLocation,
   goalsBalanceByLocation,
   efficiencyByLocation,
 };
-
 const allGamesFuncs = {
   totalPoints,
   totalGames,
@@ -238,5 +244,4 @@ const allGamesFuncs = {
   goalsBalance,
   efficiency,
 };
-
 export { homeOrAwayFuncs, allGamesFuncs };

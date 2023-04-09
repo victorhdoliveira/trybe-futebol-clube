@@ -1,7 +1,7 @@
 import { orderBy } from 'lodash';
 import { ModelStatic } from 'sequelize';
 import Teams from '../database/models/TeamsModel';
-import { allGamesFuncs, homeOrAwayFuncs } from '../utils/calulationLeaderboard';
+import { allGamesFuncs, homeOrAwayFuncs } from '../utils/leaderboardCalulation';
 
 export default class LeaderboardService {
   teamModel: ModelStatic<Teams>;
