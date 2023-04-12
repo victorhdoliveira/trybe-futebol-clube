@@ -3,6 +3,8 @@
 Neste projeto, foi desenvolvido um back-end dockerizado que utiliza modelagem de dados através do Sequelize, seguindo as regras de negócio preestabelecidas. A API criada é altamente funcional e pode ser facilmente consumida pelo front-end já criado.
 Para adicionar uma partida, é imprescindível ter um token de autenticação, exigindo que a pessoa esteja logada para fazer as alterações. Ademais, existe um relacionamento estratégico entre as tabelas teams e matches, o que permite uma atualização dinâmica e confiável das partidas.
 
+![gif](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNWFkZjc4ZWIyNTJjODJmOGIxZTJiZWQ0YzZkNDkzYTFlOTRjZTNhNSZjdD1n/eK1sV7PDyQXAO5pzLa/giphy.gif)
+
 ## API
 
 | Método HTTP | Endpoint   | Descrição               | 
