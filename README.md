@@ -7,21 +7,21 @@ Para adicionar uma partida, é imprescindível ter um token de autenticação, e
 
 | Método HTTP | Endpoint   | Descrição               | 
 | :---------- | :--------- | :---------------------- |
-| POST        | `/login`   | Realiza o login com usuários do banco de dados    
-| GET         | `/login/role`| :loc: Retorna o tipo de usuário
+| POST        | `/login`   | Realiza o login com usuários do banco de dados e gera um token    
+| GET         | `/login/role`| :lock: Retorna o tipo de usuário
 | GET         | `/teams`   | Retorna a lista de todos os times do campeonato
 | GET         | `/teams/:id` | Retorna o time conforme o id
 | GET         | `/matches`   | Retorna todas as partidas 
 | GET         | `/matches?inProgress=true` | Retorna todas as partidas em andamento
 | GET         | `/matches?inProgress=false`| Retorna todas as partidas encerradas
-| PATCH       | `/matches/:id`    | :loc: Atualiza a partida de acordo com o id passado no parâmetro
-| PATCH       | `/matches/:id/finish` | :loc: Encerra uma partida
-| POST         | `/matches`           | :loc: Insere uma nova partida
+| PATCH       | `/matches/:id`    | :lock: Atualiza a partida de acordo com o id passado no parâmetro
+| PATCH       | `/matches/:id/finish` | :lock: Encerra uma partida
+| POST         | `/matches`           | :lock: Insere uma nova partida
 | GET          | `/leaderboar/home`   | Retorna a classificação dos times mandantes
 | GET          | `/leaderboard/away`  | Retorna a classificação dos times visitantes
 | GET          | `/leaderboard`       | Retorna a classificação geral
 
-:loc: As rotas com cadeados somente pode ser acessadas com token válido gerado no login através do headers com o título "Authorization".
+:lock: As rotas com cadeados somente pode ser acessadas com token válido gerado no login através do headers com o título "Authorization" :key:.
 
 ### Corpo das requisições
 
@@ -29,8 +29,8 @@ Para adicionar uma partida, é imprescindível ter um token de autenticação, e
 
 ```json
 {
-	"email": "string",
-	"password": "string"
+  "email": "string",
+  "password": "string"
 }
 ```
 
@@ -38,8 +38,8 @@ Para adicionar uma partida, é imprescindível ter um token de autenticação, e
 
 ```json
 {
-  "homeTeamId": 16, // O valor deve ser o id do time
-  "awayTeamId": 8, // O valor deve ser o id do time
+  "homeTeamId": 16,
+  "awayTeamId": 8,
   "homeTeamGoals": 2,
   "awayTeamGoals": 2,
 }
@@ -57,6 +57,7 @@ Para adicionar uma partida, é imprescindível ter um token de autenticação, e
 * Node.js
 * Sequelize
 * TypeScript
+* JSON Web Token(JWT)
 * Docker
 * docker-compose
 
